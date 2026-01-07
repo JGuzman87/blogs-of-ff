@@ -1,7 +1,11 @@
 "use client"
 import { useState } from 'react'
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Form = () => {
+
+  const path = usePathname();
 
     const [user, setUser ] = useState({
         username: "",
@@ -22,39 +26,53 @@ const Form = () => {
     };
 
   return (
-    <form className="flex flex-col gap-2 p-2 bg-black/30 backdrop-blur-sm w-md" onSubmit={handleSubmit}>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        name="username"
-        value={user.username}
-        placeholder="enter username..."
-        onChange={handleChange}
-        className="p-2"
-        required
-      />
-      <label htmlFor="username">User Name</label>
-      <input
-        type="email"
-        name="email"
-        value={user.email}
-        placeholder="enter email..."
-        onChange={handleChange}
-        className="p-2"
-        required
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        value={user.password}
-        placeholder="enter passwod..."
-        onChange={handleChange}
-        className="p-2"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <AnimatePresence>
+      <motion.form
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{type: "tween"}}
+        className="flex flex-col gap-2 p-2 bg-white/30 backdrop-blur-md w-md rounded-xl"
+        onSubmit={handleSubmit}
+      >
+        {path === "/signup" && (
+          <>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={user.username}
+              placeholder="enter username..."
+              onChange={handleChange}
+              className="p-2 bg-white/20"
+              required
+            />
+          </>
+        )}
+        <label htmlFor="username">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={user.email}
+          placeholder="enter email..."
+          onChange={handleChange}
+          className="p-2 bg-white/20 "
+          required
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          value={user.password}
+          placeholder="enter passwod..."
+          onChange={handleChange}
+          className="p-2 bg-white/20"
+          required
+        />
+        <button type="submit" className="btn btn-ghost">
+          Login
+        </button>
+      </motion.form>
+    </AnimatePresence>
   );
 }
 
