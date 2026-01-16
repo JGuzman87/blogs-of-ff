@@ -18,23 +18,32 @@ const BlogForm = () => {
   }
 
   return (
-  
-      <motion.form
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0}}
-        transition={{type: "spring", ease: "easeInOut", duration: 1 }}
-        className="flex flex-col bg-white/30 md:w-1/2 p-2 gap-2"
-        onSubmit={handleSubmit}
-      >
-        <label htmlFor="title"> Title</label>
-        <input type="text" name="title" value={post.title} onChange={handleChange} />
-        <label htmlFor="content"> Post Content</label>
-        <textarea name="content" value={post.content} onChange={handleChange}/>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </motion.form>
-
+    <motion.form
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
+      className="flex flex-col bg-white/30 md:w-1/2 p-2 gap-2 rounded-2xl"
+      onSubmit={handleSubmit}
+    >
+      <label htmlFor="title"> Title</label>
+      <input
+        type="text"
+        name="title"
+        value={post.title}
+        onChange={handleChange}
+        className="p-2 bg-white/20"
+      />
+      <label htmlFor="content"> Post Content</label>
+      <textarea
+        name="content"
+        value={post.content}
+        onChange={handleChange}
+        className="p-2 bg-white/20"
+      />
+      <button type="submit" className="btn btn-primary">
+        Submit
+      </button>
+    </motion.form>
   );
 };
 
