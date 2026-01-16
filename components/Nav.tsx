@@ -9,10 +9,21 @@ const Nav = () => {
        shadow-xl"
       >
         <div className="flex-1">
-          <Link href={'/'} className=""><Image className="" src="/logo.png" alt="ff-logo"height={200} width={200}/></Link>
+          <Link href={"/"} className="">
+            <Image
+              className=""
+              src="/logo.png"
+              alt="ff-logo"
+              height={200}
+              width={200}
+            />
+          </Link>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">
+            <li className="text-xl text-white font-bold self-center">
+              <Link href="/dashboard">Dashboard</Link>
+            </li>
             <li>
               <details>
                 <summary className="text-xl text-white font-bold">
