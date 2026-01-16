@@ -30,7 +30,7 @@ const Form = () => {
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-      className="flex flex-col gap-2 p-2 bg-white/30 backdrop-blur-md w-md rounded-xl"
+      className="flex flex-col gap-2 p-2 bg-white/30 backdrop-blur rounded-xl"
       onSubmit={handleSubmit}
     >
       {path === "/signup" && (
