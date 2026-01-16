@@ -40,7 +40,7 @@ const BlogForm = () => {
         onChange={handleChange}
         className="p-2 bg-white/20"
       />
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-ghost">
         Submit
       </button>
     </motion.form>
