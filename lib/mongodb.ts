@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 
-const uri = process.env.MONGO_URI || "";
 let isConnected = false;
-
+const connectionString = process.env.MONGO_URI;
 
 export const connectDB = async () => {
   if (isConnected) return;
-  // If connection already exists, skip re-connecting
-  try {
-    //connect to db
-    await mongoose.connect(uri);
 
-    isConnected = true; //set Connected to true
-    console.log("MongoDB connected");
+  try {
+    if (connectionString === undefined) {
+      throw new Error("MONGO URI is undifined");
+    }
+    await mongoose.connect(connectionString);
+
+    isConnected = true;
   } catch (error) {
-    console.log("MongoDB error:", error);
+    console.log(error);
   }
 };
