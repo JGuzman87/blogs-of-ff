@@ -1,49 +1,93 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BlogForm = () => {
   const [post, setPost] = useState({ title: "", content: "" });
+  const [storedPost, setStoredPost] = useState([]);
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log( post )
-    setPost({ title: "", content: "" });
-  }
+    try {
+      const response = await fetch("/api/blogpost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: post.title, content: post.content }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert("Post created");
+        console.log(post);
+        setPost({ title: "", content: "" });
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
 
-    setPost(prevPost => ({ ...prevPost, [name]: value}))
-  }
+    setPost((prevPost) => ({ ...prevPost, [name]: value }));
+  };
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await fetch("api/blogpost");
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setStoredPost(data)
+      }
+    };
+    fetchPost();
+  
+  }, []);
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-      className="flex flex-col bg-black/30 md:w-1/2 p-2 gap-2 rounded-2xl "
-      onSubmit={handleSubmit}
-    >
-      <label htmlFor="title" className="font-bold"> Title</label>
-      <input
-        type="text"
-        name="title"
-        value={post.title}
-        onChange={handleChange}
-        className="p-2 bg-white/20 font-bold"
-      />
-      <label htmlFor="content" className="font-bold"> Post Content</label>
-      <textarea
-        name="content"
-        value={post.content}
-        onChange={handleChange}
-        className="p-2 bg-white/20"
-      />
-      <button type="submit" className="btn btn-ghost">
-        Submit
-      </button>
-    </motion.form>
+    <div className="grid grid-cols-2">
+      <motion.form
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
+        className="flex flex-col bg-black/30 md:w-1/2 p-2 gap-2 rounded-2xl "
+        onSubmit={handleSubmit}
+      >
+        <label htmlFor="title" className="font-bold">
+          {" "}
+          Title
+        </label>
+        <input
+          type="text"
+          name="title"
+          value={post.title}
+          onChange={handleChange}
+          className="p-2 bg-white/20 font-bold"
+        />
+        <label htmlFor="content" className="font-bold">
+          {" "}
+          Post Content
+        </label>
+        <textarea
+          name="content"
+          value={post.content}
+          onChange={handleChange}
+          className="p-2 bg-white/20"
+        />
+        <button type="submit" className="btn btn-ghost">
+          Submit
+        </button>
+      </motion.form>
+      <motion.div className="card">
+        <div className="card-body bg-white">
+          <ul>
+            
+          </ul>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
