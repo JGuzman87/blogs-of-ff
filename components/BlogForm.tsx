@@ -2,18 +2,15 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
-
 const BlogForm = () => {
-
   interface BlogPosts {
-    _id: number,
-    title: string,
-    content: string,
+    _id: number;
+    title: string;
+    content: string;
   }
-  
+
   const [post, setPost] = useState({ title: "", content: "" });
   const [storedPost, setStoredPost] = useState<BlogPosts[]>([]);
-
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -27,8 +24,8 @@ const BlogForm = () => {
       });
       const data = await response.json();
       if (data.success) {
-        alert("Post created");
         console.log(post);
+        setStoredPost((prevData) => [data, ...prevData]);
         setPost({ title: "", content: "" });
       }
     } catch (error: any) {
@@ -49,12 +46,10 @@ const BlogForm = () => {
         const data = await response.json();
         console.log(data);
         setStoredPost(data);
-
       }
-      
     };
     fetchPost();
-  }, []);
+  }, [storedPost]);
 
   return (
     <div className="grid grid-cols-2">
@@ -90,12 +85,24 @@ const BlogForm = () => {
           Submit
         </button>
       </motion.form>
-      <motion.div className="card">
-        <div className="card-body bg-white/30 text-black">
-          <ul>
-            {storedPost.length > 0 && storedPost.map((stored) => (<li key={stored._id}>{stored.title}</li>))}
-          </ul>
-        </div>
+      <motion.div
+        className="card gap-2"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
+      >
+        {storedPost.length > 0 &&
+          storedPost.map((stored) => (
+            <motion.div
+              className="card-body bg-white/30 text-black"
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
+            >
+              <h2>{stored.title}</h2>
+              <p>{stored.content}</p>
+            </motion.div>
+          ))}
       </motion.div>
     </div>
   );
