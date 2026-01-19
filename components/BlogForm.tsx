@@ -49,7 +49,7 @@ const BlogForm = () => {
       }
     };
     fetchPost();
-  }, [storedPost]);
+  }, [storedPost.length]);
 
   return (
     <div className="grid grid-cols-2">
@@ -94,6 +94,7 @@ const BlogForm = () => {
         {storedPost.length > 0 &&
           storedPost.map((stored) => (
             <motion.div
+              key={stored._id}
               className="card-body bg-white/30 text-black"
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
