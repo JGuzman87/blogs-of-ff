@@ -5,7 +5,7 @@ export async function GET() {
   try {
     await connectDB();
     const posts = await Post.find({});
-    return Response.json({ posts });
+    return Response.json(posts);
   } catch (error) {
     console.log(error);
   }
