@@ -25,7 +25,7 @@ const BlogForm = () => {
       const data = await response.json();
       if (data.success) {
         console.log(post);
-        setStoredPost((prevData) => [data, ...prevData]);
+        setStoredPost((prevData) => [...prevData, data]);
         setPost({ title: "", content: "" });
       }
     } catch (error: any) {
