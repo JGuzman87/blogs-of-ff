@@ -52,12 +52,12 @@ const BlogForm = () => {
   }, [storedPost.length]);
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
       <motion.form
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-        className="flex flex-col bg-black/30 md:w-1/2 p-2 gap-2 rounded-2xl "
+        className="flex flex-col col-span-2 bg-black/30  p-2 gap-2 rounded-2xl "
         onSubmit={handleSubmit}
       >
         <label htmlFor="title" className="font-bold">
@@ -70,6 +70,7 @@ const BlogForm = () => {
           value={post.title}
           onChange={handleChange}
           className="p-2 bg-white/20 font-bold"
+          required
         />
         <label htmlFor="content" className="font-bold">
           {" "}
@@ -80,13 +81,14 @@ const BlogForm = () => {
           value={post.content}
           onChange={handleChange}
           className="p-2 bg-white/20"
+          required
         />
         <button type="submit" className="btn btn-ghost">
           Submit
         </button>
       </motion.form>
       <motion.div
-        className="card gap-2"
+        className="card gap-2 col-span-3"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
@@ -95,12 +97,12 @@ const BlogForm = () => {
           storedPost.map((stored) => (
             <motion.div
               key={stored._id}
-              className="card-body bg-white/30 text-black"
+              className="card-body bg-white/30 text-black "
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
             >
-              <h2>{stored.title}</h2>
+              <h2 className="font-bold text-2xl">{stored.title}</h2>
               <p>{stored.content}</p>
             </motion.div>
           ))}
