@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.19",
     "daisyui": "^5.5.14",
     "framer-motion": "^12.24.7",
     "mongodb": "^7.0.0",

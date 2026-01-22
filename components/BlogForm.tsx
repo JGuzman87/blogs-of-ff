@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useQuery } from '@tanstack/react-query';
 
 const BlogForm = () => {
   interface BlogPosts {
@@ -38,6 +39,12 @@ const BlogForm = () => {
 
     setPost((prevPost) => ({ ...prevPost, [name]: value }));
   };
+
+  // const {isPending, error, data } = useQuery({
+  //   queryKey: ['post'],
+  //   queryFn: 
+    
+  // })
 
   useEffect(() => {
     const fetchPost = async () => {
