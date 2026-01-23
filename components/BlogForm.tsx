@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
 import { useQuery } from '@tanstack/react-query';
 
 const BlogForm = () => {
@@ -40,23 +40,29 @@ const BlogForm = () => {
     setPost((prevPost) => ({ ...prevPost, [name]: value }));
   };
 
-  // const {isPending, error, data } = useQuery({
-  //   queryKey: ['post'],
-  //   queryFn: 
+  const {isPending, error, data } = useQuery({
+    queryKey: ['post'],
+    queryFn: async () => {
+      const response = await fetch('api/blogpost');
+      return await response.json();
+    },
     
-  // })
+  });
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      const response = await fetch("/api/blogpost");
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setStoredPost(data);
-      }
-    };
-    fetchPost();
-  }, [storedPost.length]);
+  if (isPending) return 'Loading...'
+  if (error) return 'An error has occured' + error.message;
+
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     const response = await fetch("/api/blogpost");
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(data);
+  //       setStoredPost(data);
+  //     }
+  //   };
+  //   fetchPost();
+  // }, [storedPost.length]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
@@ -100,8 +106,8 @@ const BlogForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
       >
-        {storedPost.length > 0 &&
-          storedPost.map((stored) => (
+        {
+          data.map((stored: { _id: Key | null | undefined; title: string | number; content: string }) => (
             <motion.div
               key={stored._id}
               className="card-body bg-white/30 text-black "
