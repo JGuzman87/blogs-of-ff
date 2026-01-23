@@ -1,11 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const BlogForm = () => {
+  const queryClient = useQueryClient();
 
-  const [post, setPost] = useState({ title: "", content: "" });
+  interface BlogPost {
+    title: string;
+    content: string;
+  }
+
+  const [post, setPost] = useState<BlogPost>({ title: "", content: "" });
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -13,54 +19,40 @@ const BlogForm = () => {
     setPost((prevPost) => ({ ...prevPost, [name]: value }));
   };
 
-  // const mutation = useMutation({
-  //   mutationFn:
-    
-  // })
-
-    const handleSubmit = async (e: any) => {
-      e.preventDefault();
-      try {
-        const response = await fetch("/api/blogpost", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: post.title, content: post.content }),
-        });
-        const data = await response.json();
-        if (data.success) {
-          console.log(post);
-          setPost({ title: "", content: "" });
-        }
-      } catch (error: any) {
-        alert(error.message);
-      }
-    };
-
-  const {isPending, error, data } = useQuery({
-    queryKey: ['post'],
-    queryFn: async () => {
-      const response = await fetch('api/blogpost');
-      return await response.json();
+  const mutation = useMutation({
+    mutationFn: async (newPost: BlogPost) => {
+      const response = await fetch("/api/blogpost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPost),
+      });
+      return response.json();
     },
-    
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+    },
   });
 
-  if (isPending) return 'Loading...'
-  if (error) return 'An error has occured' + error.message;
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     const response = await fetch("/api/blogpost");
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(data);
-  //       setStoredPost(data);
-  //     }
-  //   };
-  //   fetchPost();
-  // }, [storedPost.length]);
+    mutation.mutate(post);
+
+    setPost({ title: "", content: "" });
+  };
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["post"],
+    queryFn: async () => {
+      const response = await fetch("api/blogpost");
+      return await response.json();
+    },
+  });
+
+  if (isPending) return "Loading...";
+  if (error) return "An error has occured" + error.message;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
@@ -104,8 +96,12 @@ const BlogForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
       >
-        {
-          data.map((stored: { _id: string | number; title: string | number; content: string }) => (
+        {data.map(
+          (stored: {
+            _id: string | number;
+            title: string | number;
+            content: string;
+          }) => (
             <motion.div
               key={stored._id}
               className="card-body bg-white/30 text-black "
@@ -116,7 +112,8 @@ const BlogForm = () => {
               <h2 className="font-bold text-2xl">{stored.title}</h2>
               <p>{stored.content}</p>
             </motion.div>
-          ))};
+          ),
+        )}
       </motion.div>
     </div>
   );
