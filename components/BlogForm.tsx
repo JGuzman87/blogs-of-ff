@@ -1,44 +1,42 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal } from "react";
-import { useQuery } from '@tanstack/react-query';
+import { useState } from "react";
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const BlogForm = () => {
-  interface BlogPosts {
-    _id: number;
-    title: string;
-    content: string;
-  }
 
   const [post, setPost] = useState({ title: "", content: "" });
-  const [storedPost, setStoredPost] = useState<BlogPosts[]>([]);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/blogpost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title: post.title, content: post.content }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        console.log(post);
-        setStoredPost((prevData) => [...prevData, data]);
-        setPost({ title: "", content: "" });
-      }
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
     setPost((prevPost) => ({ ...prevPost, [name]: value }));
   };
+
+  // const mutation = useMutation({
+  //   mutationFn:
+    
+  // })
+
+    const handleSubmit = async (e: any) => {
+      e.preventDefault();
+      try {
+        const response = await fetch("/api/blogpost", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title: post.title, content: post.content }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          console.log(post);
+          setPost({ title: "", content: "" });
+        }
+      } catch (error: any) {
+        alert(error.message);
+      }
+    };
 
   const {isPending, error, data } = useQuery({
     queryKey: ['post'],
@@ -107,7 +105,7 @@ const BlogForm = () => {
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
       >
         {
-          data.map((stored: { _id: Key | null | undefined; title: string | number; content: string }) => (
+          data.map((stored: { _id: string | number; title: string | number; content: string }) => (
             <motion.div
               key={stored._id}
               className="card-body bg-white/30 text-black "
@@ -118,7 +116,7 @@ const BlogForm = () => {
               <h2 className="font-bold text-2xl">{stored.title}</h2>
               <p>{stored.content}</p>
             </motion.div>
-          ))}
+          ))};
       </motion.div>
     </div>
   );
