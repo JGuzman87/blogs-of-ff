@@ -51,7 +51,6 @@ const BlogForm = () => {
     },
   });
 
-  if (isPending) return "Loading...";
   if (error) return "An error has occured" + error.message;
 
   return (
@@ -60,7 +59,7 @@ const BlogForm = () => {
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-        className="flex flex-col col-span-2 bg-black/30  p-2 gap-2 rounded-2xl "
+        className="flex flex-col col-span-2 bg-black/30 backdrop-blur-md  p-2 gap-2 rounded-2xl "
         onSubmit={handleSubmit}
       >
         <label htmlFor="title" className="font-bold">
@@ -96,24 +95,31 @@ const BlogForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
       >
-        {data.map(
-          (stored: {
-            _id: string | number;
-            title: string | number;
-            content: string;
-          }) => (
-            <motion.div
-              key={stored._id}
-              className="card-body bg-white/30 text-black "
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-            >
-              <h2 className="font-bold text-2xl">{stored.title}</h2>
-              <p>{stored.content}</p>
-            </motion.div>
-          ),
-        )}
+    
+        {isPending
+          ? "Loading..."
+          : data.map(
+              (stored: {
+                _id: string | number;
+                title: string | number;
+                content: string;
+              }) => (
+                <motion.div
+                  key={stored._id}
+                  className="card-body bg-white/30 backdrop-blur-md text-black "
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    ease: "easeInOut",
+                    duration: 1,
+                  }}
+                >
+                  <h2 className="font-bold text-2xl">{stored.title}</h2>
+                  <p>{stored.content}</p>
+                </motion.div>
+              ),
+            )}
       </motion.div>
     </div>
   );
