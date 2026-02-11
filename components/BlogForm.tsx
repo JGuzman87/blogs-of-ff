@@ -115,7 +115,7 @@ const BlogForm = () => {
                     duration: 1,
                   }}
                 >
-                  <h2 className="font-bold text-2xl">{stored.title}</h2>
+                  <h2 className="font-bold text-2xl border-b-2 border-gray-500/30 ">{stored.title}</h2>
                   <p>{stored.content}</p>
                 </motion.div>
               ),
