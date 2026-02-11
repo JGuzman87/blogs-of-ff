@@ -54,12 +54,12 @@ const BlogForm = () => {
   if (error) return "An error has occured" + error.message;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
       <motion.form
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-        className="flex flex-col col-span-2 bg-black/30 backdrop-blur-md  p-2 gap-2 rounded-2xl "
+        className="flex flex-col col-span-1 bg-black/30 backdrop-blur-md  p-1 gap-2 rounded-2xl md:h-50"
         onSubmit={handleSubmit}
       >
         <label htmlFor="title" className="font-bold">
@@ -90,7 +90,7 @@ const BlogForm = () => {
         </button>
       </motion.form>
       <motion.div
-        className="card gap-2 col-span-3"
+        className="card gap-2 col-span-2 p-2"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
@@ -106,7 +106,7 @@ const BlogForm = () => {
               }) => (
                 <motion.div
                   key={stored._id}
-                  className="card-body bg-white/30 backdrop-blur-md text-black "
+                  className="card-body bg-white/50 backdrop-blur-lg text-black rounded-2xl"
                   initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
