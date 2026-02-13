@@ -34,6 +34,7 @@ const PostCard = ({ isPending, data, error }: Props) => {
                   duration: 1,
                 }}
               >
+                <button type="button" className="self-end btn">X</button>
                 <h2 className="font-bold text-2xl border-b-2 border-gray-500/30 ">
                   {stored.title}
                 </h2>

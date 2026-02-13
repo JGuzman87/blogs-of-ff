@@ -52,8 +52,6 @@ const BlogForm = () => {
     },
   });
 
-
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
       <motion.form
@@ -90,8 +88,7 @@ const BlogForm = () => {
           Submit
         </button>
       </motion.form>
-      <PostCard isPending={isPending} data={data} error={error}/>
-     
+      <PostCard isPending={isPending} data={data} error={error} />
     </div>
   );
 };
