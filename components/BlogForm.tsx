@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import PostCard from "./PostCard";
 
 const BlogForm = () => {
   const queryClient = useQueryClient();
@@ -51,7 +52,7 @@ const BlogForm = () => {
     },
   });
 
-  if (error) return "An error has occured" + error.message;
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-2">
@@ -89,38 +90,8 @@ const BlogForm = () => {
           Submit
         </button>
       </motion.form>
-      <motion.div
-        className="card gap-2 col-span-2 p-2"
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", ease: "easeInOut", duration: 1 }}
-      >
-    
-        {isPending
-          ? "Loading..."
-          : data.map(
-              (stored: {
-                _id: string | number;
-                title: string | number;
-                content: string;
-              }) => (
-                <motion.div
-                  key={stored._id}
-                  className="card-body bg-white/50 backdrop-blur-lg text-black rounded-2xl"
-                  initial={{ opacity: 0, y: 100 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    type: "spring",
-                    ease: "easeInOut",
-                    duration: 1,
-                  }}
-                >
-                  <h2 className="font-bold text-2xl border-b-2 border-gray-500/30 ">{stored.title}</h2>
-                  <p>{stored.content}</p>
-                </motion.div>
-              ),
-            )}
-      </motion.div>
+      <PostCard isPending={isPending} data={data} error={error}/>
+     
     </div>
   );
 };
