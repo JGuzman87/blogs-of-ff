@@ -7,6 +7,18 @@ interface Props {
 }
 
 const PostCard = ({ isPending, data, error }: Props) => {
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/blogpost/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        data.filter((post: { _id: string }) => post._id !== id);
+      }
+    } catch (error) {
+      console.error("failed to delte post", error);
+    }
+  };
   if (error) return "An error has occured" + error.message;
   return (
     <motion.div
@@ -19,7 +31,7 @@ const PostCard = ({ isPending, data, error }: Props) => {
         ? "Loading..."
         : data.map(
             (stored: {
-              _id: string | number;
+              _id: string;
               title: string | number;
               content: string;
             }) => (
@@ -38,7 +50,11 @@ const PostCard = ({ isPending, data, error }: Props) => {
                   {stored.title}
                 </h2>
                 <p>{stored.content}</p>
-                <button type="button" className="self-end btn">
+                <button
+                  type="button"
+                  className="self-end btn"
+                  onClick={() => handleDelete(stored._id)}
+                >
                   X
                 </button>
               </motion.div>
