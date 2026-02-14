@@ -18,12 +18,28 @@ const Form = () => {
         setUser(prevUser => ({...prevUser, [name]: value}))
     };
 
-    const handleSubmit = (e:any) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
-          console.log(user);
+        const response = await fetch('/api/user',{
+          method: 'POST',
+          headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if(response.ok) {
+        alert("added user")
+      }
+      
+        console.log(user);
         setUser({ username: "", email: "", password: "" });
       
-    };
+  
+    }
+    
+       
+        
 
   return (
     <motion.form

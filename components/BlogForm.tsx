@@ -47,7 +47,7 @@ const BlogForm = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ["post"],
     queryFn: async () => {
-      const response = await fetch("api/blogpost");
+      const response = await fetch("/api/blogpost");
       return await response.json();
     },
   });

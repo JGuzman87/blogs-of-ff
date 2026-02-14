@@ -12,12 +12,9 @@ const PostCard = ({ isPending, data, error }: Props) => {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/blogpost/${id}`, {
+      await fetch(`/api/blogpost/${id}`, {
         method: "DELETE",
       });
-      if (response.ok) {
-        data.filter((post: { _id: string }) => post._id !== id);
-      }
     } catch (error) {
       console.error("failed to delte post", error);
     }
@@ -57,7 +54,7 @@ const PostCard = ({ isPending, data, error }: Props) => {
                 transition={{
                   type: "spring",
                   ease: "easeInOut",
-                  duration: 0.5,
+                  duration: 1.5,
                 }}
                 layout
               >
