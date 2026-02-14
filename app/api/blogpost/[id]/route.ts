@@ -2,12 +2,15 @@ import { connectDB } from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { ObjectId } from "mongodb";
 
-export async function DElETE({ params }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
   try {
     await connectDB();
     const { id } = params;
     if (!ObjectId.isValid(id)) {
-      return Response.json({ error: error.message }, { status: 400 });
+      return Response.json({ error: "could not find post with id" }, { status: 400 });
     }
     const deletePost = await Post.findByIdAndDelete(id);
 
